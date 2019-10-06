@@ -7,8 +7,17 @@
 #include<algorithm>
 #include<cstring>
 #include<io.h>
+#include<iomanip>
+#include<vector>
 
 using namespace std;
+
+typedef pair <char, size_t> PAIR;
+bool cmp(const PAIR &x, const PAIR &y)
+{
+	return x.second > y.second;
+}
+
 
 int main(int argc, char *argv[])
 // int main()
@@ -29,12 +38,13 @@ int main(int argc, char *argv[])
   int total_ch = 0;
   map <char, size_t> map1;
   map <char, size_t>::iterator it_map;
+	vector<PAIR>::iterator it_vec;
 
   string str_line;
   //argv[1].length is right and input is not none
 	if(str_order.length() == 2)
   {
-		cout<<str_order<<endl<<endl;
+		cout<<"Operating "<<str_order<<endl<<endl;
   	if(str_order == "-c")
   	{
 	    while(getline(input,s))
@@ -45,13 +55,22 @@ int main(int argc, char *argv[])
 	      {
 	        char ch = s[i];
 	        if(isalpha(ch))
+					{
 	          ++map1[ch];
+						total_ch++;
+					}
 	      }
 	    }
+			vector<PAIR> map_vec(map1.begin(), map1.end());
+			sort(map_vec.begin(), map_vec.end(), cmp);
 	  		
-	    for(it_map=map1.begin(); it_map != map1.end(); it_map++)
+	    for(it_vec=map_vec.begin(); it_vec != map_vec.end(); it_vec++)
 	    {
-	  		output<<it_map->first<<" "<<it_map->second<<endl;	
+				float freq = (float)it_vec->second / total_ch;
+				freq *= 100;
+	  		output<<it_vec->first<<" ";
+				output<<setiosflags(ios::fixed)<<setprecision(2);
+				output<<freq<<"%"<<endl;
 			}
 		}
 	
@@ -85,14 +104,23 @@ int main(int argc, char *argv[])
 		      {
 		        char ch = s[i];
 		        if(isalpha(ch))
+						{
 		          ++map1[ch];
+							total_ch++;
+						}
 		      }
 		    }
 		  				
-		    for(it_map=map1.begin(); it_map != map1.end(); it_map++)
+				vector<PAIR> map_vec(map1.begin(), map1.end());
+				sort(map_vec.begin(), map_vec.end(), cmp);
+
+		    for(it_vec=map_vec.begin(); it_vec != map_vec.end(); it_vec++)
 		    {
-		    	//cout<<it_map->first<<" "<<it_map->second<<endl;
-		  		output<<it_map->first<<" "<<it_map->second<<endl;	
+		    	float freq = (float)it_vec->second / total_ch;
+					freq *= 100;
+		  		output<<it_vec->first<<" ";
+					output<<setiosflags(ios::fixed)<<setprecision(2);
+					output<<freq<<"%"<<endl;
 				}
 				output<<endl<<endl;
 				k = _findnext( HANDLE, &file );	
